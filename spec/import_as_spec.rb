@@ -1,9 +1,10 @@
-RSpec.describe ImportAs do
-  it "has a version number" do
-    expect(ImportAs::VERSION).not_to be nil
-  end
+using ImportAs
 
-  it "does something useful" do
-    expect(false).to eq(true)
+import { C as D }.from File.expand_path("./c.rb", __dir__)
+
+RSpec.describe ImportAs do
+  it 'rename C as D' do
+    expect { C }.to raise_error(NameError, /uninitialized constant C/)
+    expect { D.new.hi }.to output(/\Ahi\n\z/).to_stdout
   end
 end

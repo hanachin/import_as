@@ -7,7 +7,12 @@ Add DSL: import { C as C2 }.from "./c.rb"
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'import_as'
+# Refinements version
+gem "import_as"
+
+# Core extension version
+
+gem "import_as", require: "import_as/core_ext"
 ```
 
 And then execute:
@@ -28,7 +33,7 @@ Or install it yourself as:
     end
 
     # main.rb
-    require "import_as"
+    require "import_as/core_ext"
 
     import { C as C2 }.from "./c.rb"
 
