@@ -40,7 +40,9 @@ module ImportAs
     def from(path)
       ext, feature_path = RubyVM.resolve_feature_path(path)
 
-      raise Error, "#{ext} is not supported" unless ext == :rb
+      unless ext == :rb
+        return require(path)
+      end
 
       new_source = rewrite(File.read(feature_path))
 
