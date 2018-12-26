@@ -1,5 +1,1 @@
-class C
-  def hi
-    puts "hi"
-  end
-end
+require "./spec/c2"

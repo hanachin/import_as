@@ -4,6 +4,14 @@ require "ripper"
 module ImportAs
   class Error < StandardError; end
 
+  module Recursive
+    refine(Object) do
+      def require(path)
+        ::ImportAs::DSL.new(&Thread.current[:import_as]).from(path)
+      end
+    end
+  end
+
   class ConstRewriter
     def initialize(const_hash)
       @rewriter = Class.new(Ripper::Filter) {
@@ -20,7 +28,7 @@ module ImportAs
     end
 
     def rewrite(ruby)
-      @rewriter.new(ruby).parse('')
+      "using ImportAs::Recursive;" + @rewriter.new(ruby).parse('')
     end
   end
 
@@ -35,7 +43,14 @@ module ImportAs
       raise Error, "#{ext} is not supported" unless ext == :rb
 
       new_source = rewrite(File.read(feature_path))
-      eval(new_source, TOPLEVEL_BINDING, feature_path)
+
+      begin
+        old_import_as = Thread.current[:import_as]
+        Thread.current[:import_as] = @as
+        eval(new_source, TOPLEVEL_BINDING, feature_path)
+      ensure
+        Thread.current[:import_as] = old_import_as
+      end
     end
 
     private
