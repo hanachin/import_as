@@ -44,6 +44,10 @@ module ImportAs
         return require(path)
       end
 
+      unless feature_path
+        raise Error, "cannot resolve path -- #{path}"
+      end
+
       new_source = rewrite(File.read(feature_path))
 
       begin
