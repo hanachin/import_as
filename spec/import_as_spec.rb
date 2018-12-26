@@ -1,6 +1,6 @@
 using ImportAs
 
-import { C as D }.from File.expand_path("./c.rb", __dir__)
+import { C as D }.from "./spec/c.rb"
 
 RSpec.describe ImportAs do
   it 'rename C as D' do

@@ -30,8 +30,12 @@ module ImportAs
     end
 
     def from(path)
-      new_source = rewrite(File.read(path))
-      eval(new_source, TOPLEVEL_BINDING, path)
+      ext, feature_path = RubyVM.resolve_feature_path(path)
+
+      raise Error, "#{ext} is not supported" unless ext == :rb
+
+      new_source = rewrite(File.read(feature_path))
+      eval(new_source, TOPLEVEL_BINDING, feature_path)
     end
 
     private
