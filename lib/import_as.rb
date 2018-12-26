@@ -54,19 +54,19 @@ module ImportAs
 
       refine(RubyVM::AbstractSyntaxTree::Node) do
         def array?
-          type == "NODE_ARRAY"
+          type == :ARRAY
         end
 
         def const?
-          type == "NODE_CONST"
+          type == :CONST
         end
 
         def fcall?
-          type == "NODE_FCALL"
+          type == :FCALL
         end
 
         def scope?
-          type == "NODE_SCOPE"
+          type == :SCOPE
         end
 
         def const_pair
