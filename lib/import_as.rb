@@ -1,6 +1,5 @@
 require "import_as/version"
 require "ripper"
-require "tempfile"
 
 module ImportAs
   class Error < StandardError; end
@@ -31,15 +30,8 @@ module ImportAs
     end
 
     def from(path)
-      Tempfile.open(["import_as", ".rb"]) do |tf|
-        new_source = rewrite(File.read(path))
-
-        tf.write(new_source)
-        tf.flush
-        tf.close
-
-        load tf.path
-      end
+      new_source = rewrite(File.read(path))
+      eval(new_source, TOPLEVEL_BINDING)
     end
 
     private
