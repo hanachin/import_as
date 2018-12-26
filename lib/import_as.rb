@@ -31,7 +31,7 @@ module ImportAs
 
     def from(path)
       new_source = rewrite(File.read(path))
-      eval(new_source, TOPLEVEL_BINDING)
+      eval(new_source, TOPLEVEL_BINDING, path)
     end
 
     private
